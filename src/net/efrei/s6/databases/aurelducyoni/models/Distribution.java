@@ -88,7 +88,7 @@ public class Distribution extends Observable<Distribution> {
         json.put("id", getId());
         json.put("employee", getEmployee() != null ? getEmployee().toJSON() : null);
         json.put("truck", getTruck() != null ? getTruck().toJSON() : null);
-        json.put("date", getDate() != null ? getDate().getTime() : null);
+        json.put("date", getDate());
         json.put("source", getSource() != null ? getSource().toJSON() : null);
         json.put("destination", getDestination() != null ? getDestination().toJSON() : null);
         json.put("vehicles", getVehicles().stream().map(Vehicle::toJSON).collect(Collectors.toList()));

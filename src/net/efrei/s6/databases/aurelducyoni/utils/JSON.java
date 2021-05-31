@@ -1,6 +1,7 @@
 package net.efrei.s6.databases.aurelducyoni.utils;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 public class JSON {
@@ -24,6 +25,8 @@ public class JSON {
                 result.append(stringify((Map<String, ?>) entry.getValue()));
             else if (entry.getValue() instanceof Collection)
                 result.append(stringify((Collection<?>) entry.getValue()));
+            else if (entry.getValue() instanceof Date)
+                result.append(stringify((Date) entry.getValue()));
             else if (entry.getValue() instanceof Number)
                 result.append(stringify((Number) entry.getValue()));
             else if (entry.getValue() instanceof String)
@@ -53,6 +56,8 @@ public class JSON {
                 result.append(stringify((Map<String, ?>) item));
             else if (item instanceof Collection)
                 result.append(stringify((Collection<?>) item));
+            else if (item instanceof Date)
+                result.append(stringify((Date) item));
             else if (item instanceof Number)
                 result.append(stringify((Number) item));
             else if (item instanceof String)
@@ -117,12 +122,19 @@ public class JSON {
         return result.toString();
     }
 
+    public static String stringify(Date date) {
+        if (date == null)
+            return "null";
+
+        return stringify(date.getTime());
+    }
+
     public static String stringify(Number number) {
         if (number == null)
             return "null";
 
         if (number.doubleValue() % 1 == 0)
-            return Integer.toString(number.intValue());
+            return Long.toString(number.longValue());
 
         return Double.toString(number.doubleValue());
     }

@@ -75,11 +75,12 @@ public class Rental extends Observable<Rental> {
 
     public Map<String, ?> toJSON() {
         Map<String, Object> json = new HashMap<>();
-        json.put("reservation", getReservation());
+        json.put("reservation", getReservation() != null ? getReservation().toJSON() : null);
         json.put("employee", getEmployee() != null ? getEmployee().toJSON() : null);
-        json.put("date", getDate() != null ? getDate().getTime() : null);
+        json.put("date", getDate());
         json.put("damage_insurance", hasDamageInsurance());
         json.put("accident_insurance", hasAccidentInsurance());
+        json.put("duration", getDuration());
         return json;
     }
 

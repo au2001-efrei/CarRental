@@ -78,7 +78,7 @@ public class Return extends Observable<Return> {
         json.put("rental", getRental());
         json.put("agency", getAgency() != null ? getAgency().toJSON() : null);
         json.put("employee", getEmployee() != null ? getEmployee().toJSON() : null);
-        json.put("date", getDate() != null ? getDate().getTime() : null);
+        json.put("date", getDate());
         json.put("fuel_consumption", getFuelConsumption());
         json.put("damage_level", getDamageLevel());
         return json;
