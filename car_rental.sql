@@ -198,7 +198,10 @@ ALTER TABLE `Vehicle`
 INSERT INTO `Agency` (`name`, `phone`, `street_number`, `street_name`, `postal_code`, `city`, `longitude`, `latitude`, `capacity`) VALUES
 ('Villejuif', '+33 (0) 1 23 45 67 89', '30-32', 'avenue de la République', '94800', 'Villejuif', '2.36388', '48.78856', 10);
 
--- TODO: Category
+INSERT INTO `Category` (`name`, `daily_rate`, `deposit`) VALUES
+('Comfort', '50.00', '500.00'),
+('Economic', '10.00', '100.00'),
+('Luxury', '500.00', '10000.00');
 
 INSERT INTO `Customer` (`last_name`, `first_name`, `street_number`, `street_name`, `postal_code`, `city`, `phone`) VALUES
 ('Nguyen', 'Duc-Thomas', NULL, NULL, NULL, NULL, NULL),
@@ -216,11 +219,24 @@ INSERT INTO `Employee` (`agency_id`, `last_name`, `first_name`, `street_number`,
 -- TODO: Invoice
 -- TODO: LoyaltyProgram
 -- TODO: LoyaltySubscription
--- TODO: Quote
--- TODO: Rental
--- TODO: Reservation
+
+INSERT INTO `Quote` (`id`, `reservation_id`, `amount`) VALUES
+(1, 1, '10000.00');
+
+INSERT INTO `Rental` (`reservation_id`, `employee_id`, `date`, `damage_insurance`, `accident_insurance`, `duration`) VALUES
+(1, 2, '2021-05-24', 1, 1, 10);
+
+INSERT INTO `Reservation` (`id`, `agency_id`, `customer_id`, `vehicle_license_plate`, `employee_id`, `expected_duration`) VALUES
+(1, 1, 1, 'KD-332-EW', 1, 10);
+
 -- TODO: Return
 -- TODO: Truck
--- TODO: Vehicle
+
+INSERT INTO `Vehicle` (`license_plate`, `brand`, `model`, `mileage`, `automatic`, `air_conditioned`, `fuel`, `category_name`) VALUES
+('CP-842-TA', 'Bugatti', 'Chiron', 35000, 1, 1, 'Diesel', 'Luxury'),
+('IR-276-WE', 'Ford', 'Mustang 1969', 100000, 1, 1, 'Diesel', 'Luxury'),
+('JH-425-PW', 'Peugeot', '208', 230000, 0, 0, 'SP95', 'Economic'),
+('KD-332-EW', 'Porsche', '911R', 300, 1, 1, 'SP98', 'Luxury'),
+('NX-793-GV', 'Telsa', 'S', 80000, 1, 1, 'Electric', 'Comfort');
 
 COMMIT;
