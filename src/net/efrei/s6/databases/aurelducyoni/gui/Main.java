@@ -2,6 +2,7 @@ package net.efrei.s6.databases.aurelducyoni.gui;
 
 import com.sun.net.httpserver.HttpServer;
 import net.efrei.s6.databases.aurelducyoni.controllers.RentalController;
+import net.efrei.s6.databases.aurelducyoni.controllers.StatsController;
 import net.efrei.s6.databases.aurelducyoni.controllers.UserController;
 import net.efrei.s6.databases.aurelducyoni.controllers.VehicleController;
 import net.efrei.s6.databases.aurelducyoni.dbms.Datastore;
@@ -41,6 +42,7 @@ public class Main {
         UserController userController = new UserController(datastore);
         RentalController rentalController = new RentalController(datastore);
         VehicleController vehicleController = new VehicleController(datastore);
+        StatsController statsController = new StatsController(datastore);
 
         HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", 8001), 5);
         server.setExecutor(new ThreadPoolExecutor(0, 10, 1L, TimeUnit.MINUTES, new SynchronousQueue<>()));
@@ -57,7 +59,7 @@ public class Main {
         // server.createContext("/vehicle/", new VehicleDetailsView(userController, rentalController, vehicleController));
         // server.createContext("/distributions", new DistributionsView(userController));
         // server.createContext("/distribution/", new DistributionDetailsView(userController));
-        server.createContext("/stats", new StatsView(userController));
+        server.createContext("/stats", new StatsView(userController, statsController));
 
         server.start();
         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE))

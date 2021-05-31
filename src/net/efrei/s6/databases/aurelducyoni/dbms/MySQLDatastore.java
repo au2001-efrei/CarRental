@@ -740,6 +740,11 @@ public class MySQLDatastore implements Datastore {
         try (PreparedStatement statement = connection.prepareStatement(
             "SELECT * FROM Quote " +
                 "LEFT JOIN Reservation ON Reservation.id = Quote.reservation_id " +
+                "LEFT JOIN Agency ON Agency.id = Reservation.agency_id " +
+                "LEFT JOIN Customer ON Customer.id = Reservation.customer_id " +
+                "LEFT JOIN Vehicle ON Vehicle.license_plate = Reservation.vehicle_license_plate " +
+                "LEFT JOIN Category ON Category.name = Vehicle.category_name " +
+                "LEFT JOIN Employee AS ReservationEmployee ON ReservationEmployee.id = Reservation.employee_id " +
                 "WHERE Quote.id = ?"
         )) {
             statement.setInt(1, id);
@@ -758,8 +763,13 @@ public class MySQLDatastore implements Datastore {
     public List<Quote> getQuoteList() {
         try (Statement statement = connection.createStatement()) {
             try (ResultSet resultSet = statement.executeQuery(
-                "SELECT * FROM Quote" +
-                    "LEFT JOIN Reservation ON Reservation.id = Quote.reservation_id"
+                "SELECT * FROM Quote " +
+                    "LEFT JOIN Reservation ON Reservation.id = Quote.reservation_id " +
+                    "LEFT JOIN Agency ON Agency.id = Reservation.agency_id " +
+                    "LEFT JOIN Customer ON Customer.id = Reservation.customer_id " +
+                    "LEFT JOIN Vehicle ON Vehicle.license_plate = Reservation.vehicle_license_plate " +
+                    "LEFT JOIN Category ON Category.name = Vehicle.category_name " +
+                    "LEFT JOIN Employee AS ReservationEmployee ON ReservationEmployee.id = Reservation.employee_id"
             )) {
                 List<Quote> quotes = new LinkedList<>();
                 while (resultSet.next())
@@ -937,6 +947,7 @@ public class MySQLDatastore implements Datastore {
                 "LEFT JOIN Agency ON Agency.id = Reservation.agency_id " +
                 "LEFT JOIN Customer ON Customer.id = Reservation.customer_id " +
                 "LEFT JOIN Vehicle ON Vehicle.license_plate = Reservation.vehicle_license_plate " +
+                "LEFT JOIN Category ON Category.name = Vehicle.category_name " +
                 "LEFT JOIN Employee AS ReservationEmployee ON ReservationEmployee.id = Reservation.employee_id " +
                 "WHERE Reservation.id = ?"
         )) {
@@ -960,6 +971,7 @@ public class MySQLDatastore implements Datastore {
                     "LEFT JOIN Agency ON Agency.id = Reservation.agency_id " +
                     "LEFT JOIN Customer ON Customer.id = Reservation.customer_id " +
                     "LEFT JOIN Vehicle ON Vehicle.license_plate = Reservation.vehicle_license_plate " +
+                    "LEFT JOIN Category ON Category.name = Vehicle.category_name " +
                     "LEFT JOIN Employee AS ReservationEmployee ON ReservationEmployee.id = Reservation.employee_id"
             )) {
                 List<Reservation> reservations = new LinkedList<>();

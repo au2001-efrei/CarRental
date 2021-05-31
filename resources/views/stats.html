@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>const customers = {{customers}}, agencies = {{agencies}}, turnovers = {{turnovers}};</script>
     <style>
         * {
             margin: 0;
@@ -254,15 +255,14 @@
     </header>
     <div class="width"></div>
     <header>
-        <h1>Gold Membership Clients</h1>
+        <h1>Gold membership customers</h1>
     </header>
     <main>
         <table class="tableau">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Name</th>
-                    <th>First Name</th>
+                    <th>Number of rentals</th>
                     <th>Money Spent</th>
                 </tr>
             </thead>
@@ -271,15 +271,14 @@
         </table>
     </main>
     <header>
-        <h1>Agencies Operating At Over 80% Capacity</h1>
+        <h1>Agencies over 80% capacity</h1>
     </header>
     <main>
         <table class="tableau">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Name</th>
-                    <th>Location</th>
+                    <th>Address</th>
                     <th>Current Capacity</th>
                 </tr>
             </thead>
@@ -288,54 +287,95 @@
         </table>
     </main>
     <header>
-        <h1>Turnover</h1>
+        <h1>Turnover per agency this year</h1>
     </header>
     <main>
         <table class="tableau">
             <thead>
                 <tr>
-                    <th>Agency ID</th>
-                    <th>Agency Name</th>
+                    <th>Agency</th>
+                    <th>Number of rentals</th>
                     <th>Turnover</th>
                 </tr>
             </thead>
-            <tbody id="turnover" class="color">
+            <tbody id="turnovers" class="color">
             </tbody>
         </table>
     </main>
     
     <script>
-        
-        function addContent(){
-            var table = document.getElementById("table");
-            var row = document.createElement("TR");
-            table.appendChild(row);
-            var cell1 = document.createElement("TD");
-            row.appendChild(cell1);
-            var cell2 = document.createElement("TD");
-            row.appendChild(cell2);
-            
-            var cell3 = document.createElement("TD");
-            row.appendChild(cell3);
-            
-            var cell4 = document.createElement("TD");
-            row.appendChild(cell4);
-            cell1.innerHTML = document.getElementById("first_name").value;
-            cell2.innerHTML = document.getElementById("family_name").value;
-            cell3.innerHTML = document.getElementById("email").value;
-            cell4.innerHTML = document.getElementById("object").value;
-            
-            
-            return false;
-        }
-        
-        function removeContent(){
-            var table = document.getElementById("table");
-            table.innerHTML = "";
-        }
-        
-        window.onload = timer;
-        
+      const $customers = document.getElementById("customers");
+      customers.forEach(customer => {
+        const $row = document.createElement("tr");
+
+        const $nameCell = document.createElement("td");
+        const $link = document.createElement("a");
+        $link.href = `/customer/${encodeURIComponent(customer.id)}`;
+        $link.innerText = `${customer.first_name} ${customer.last_name}`;
+        $nameCell.appendChild($link);
+        $row.appendChild($nameCell);
+
+        const $rentalsCell = document.createElement("td");
+        $rentalsCell.innerText = customer.rentals_count;
+        $row.appendChild($rentalsCell);
+
+        const $moneyCell = document.createElement("td");
+        $moneyCell.innerText = `$${customer.spending_sum}`;
+        $row.appendChild($moneyCell);
+
+        $customers.appendChild($row);
+      });
+
+      const $agencies = document.getElementById("agencies");
+      agencies.forEach(agency => {
+        const $row = document.createElement("tr");
+
+        const $nameCell = document.createElement("td");
+        const $link = document.createElement("a");
+        $link.href = `/agency/${encodeURIComponent(agency.id)}`;
+        $link.innerText = agency.name;
+        $nameCell.appendChild($link);
+        $row.appendChild($nameCell);
+
+        const $addressCell = document.createElement("td");
+        const address = [];
+        if (agency.street_number !== null) address.push(agency.street_number);
+        if (agency.street_name !== null) address.push(agency.street_name);
+        if (agency.postal_code !== null) address.push(agency.postal_code);
+        if (agency.city !== null) address.push(agency.city);
+        if (address.length > 0)
+          $addressCell.innerText = address.join(" ");
+        else $addressCell.innerHTML = "<i>No address</i>";
+        $row.appendChild($addressCell);
+
+        const $capacityCell = document.createElement("td");
+        $capacityCell.innerText = `${agency.vehicles_count} / ${agency.capacity}`;
+        $row.appendChild($capacityCell);
+
+        $agencies.appendChild($row);
+      });
+
+      const $turnovers = document.getElementById("turnovers");
+      turnovers.forEach(agency => {
+        const $row = document.createElement("tr");
+
+        const $nameCell = document.createElement("td");
+        const $link = document.createElement("a");
+        $link.href = `/agency/${encodeURIComponent(agency.id)}`;
+        $link.innerText = agency.name;
+        $nameCell.appendChild($link);
+        $row.appendChild($nameCell);
+
+        const $rentalsCell = document.createElement("td");
+        $rentalsCell.innerText = agency.rentals_count;
+        $row.appendChild($rentalsCell);
+
+        const $turnoverCell = document.createElement("td");
+        $turnoverCell.innerText = `$${agency.spending_sum}`;
+        $row.appendChild($turnoverCell);
+
+        $turnovers.appendChild($row);
+      });
     </script>
 </body>
 </html>

@@ -23,12 +23,12 @@ public class VehicleController {
             search = null;
 
         final String finalSearch = search;
-        Set<Rental> returnedRentals = datastore.getReturnList().stream().map(Return::getRental).collect(Collectors.toSet());
-        Set<Vehicle> rentedVehicles = datastore.getRentalList().stream().filter(rental -> !returnedRentals.contains(rental))
-            .map(rental -> rental.getReservation().getVehicle()).collect(Collectors.toSet());
+        Set<Integer> returnedRentals = datastore.getReturnList().stream().map(r -> r.getRental().getReservation().getId()).collect(Collectors.toSet());
+        Set<String> rentedVehicles = datastore.getRentalList().stream().filter(rental -> !returnedRentals.contains(rental.getReservation().getId()))
+            .map(rental -> rental.getReservation().getVehicle().getLicensePlate()).collect(Collectors.toSet());
 
         return datastore.getVehicleList().stream().filter(vehicle -> {
-            if (rentedVehicles.contains(vehicle)) return false;
+            if (rentedVehicles.contains(vehicle.getLicensePlate())) return false;
             if (finalSearch == null) return true;
             String model = vehicle.getModel().toLowerCase();
             String brand = vehicle.getBrand().toLowerCase();

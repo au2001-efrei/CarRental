@@ -18,8 +18,8 @@ public class RentalController {
     }
 
     public List<Rental> getOngoingRentalList() {
-        Set<Rental> returnedRentals = datastore.getReturnList().stream().map(Return::getRental).collect(Collectors.toSet());
-        return datastore.getRentalList().stream().filter(rental -> !returnedRentals.contains(rental)).collect(Collectors.toList());
+        Set<Integer> returnedRentals = datastore.getReturnList().stream().map(r -> r.getRental().getReservation().getId()).collect(Collectors.toSet());
+        return datastore.getRentalList().stream().filter(rental -> !returnedRentals.contains(rental.getReservation().getId())).collect(Collectors.toList());
     }
 
     public List<Agency> getAgencyList() {
