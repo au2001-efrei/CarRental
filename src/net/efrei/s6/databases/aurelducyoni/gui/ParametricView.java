@@ -2,7 +2,6 @@ package net.efrei.s6.databases.aurelducyoni.gui;
 
 import com.sun.net.httpserver.HttpExchange;
 import net.efrei.s6.databases.aurelducyoni.controllers.UserController;
-import net.efrei.s6.databases.aurelducyoni.models.Employee;
 
 import java.io.IOException;
 

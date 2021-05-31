@@ -2,16 +2,12 @@ package net.efrei.s6.databases.aurelducyoni.gui.views;
 
 import com.sun.net.httpserver.HttpExchange;
 import net.efrei.s6.databases.aurelducyoni.controllers.UserController;
-import net.efrei.s6.databases.aurelducyoni.gui.AuthenticatedView;
 import net.efrei.s6.databases.aurelducyoni.gui.HTTPResponse;
 import net.efrei.s6.databases.aurelducyoni.gui.ParametricView;
 import net.efrei.s6.databases.aurelducyoni.models.Customer;
 import net.efrei.s6.databases.aurelducyoni.utils.JSON;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 public class CustomerDetailsView extends ParametricView<Customer> {
 

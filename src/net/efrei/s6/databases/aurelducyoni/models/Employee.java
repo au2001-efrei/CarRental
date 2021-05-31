@@ -1,6 +1,5 @@
 package net.efrei.s6.databases.aurelducyoni.models;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import net.efrei.s6.databases.aurelducyoni.observers.Observable;
 import net.efrei.s6.databases.aurelducyoni.utils.PasswordHash;
 
