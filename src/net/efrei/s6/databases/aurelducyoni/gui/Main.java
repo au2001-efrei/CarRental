@@ -45,11 +45,15 @@ public class Main {
         server.createContext("/", new HomeView(userController));
         server.createContext("/login", new LoginView(userController));
         server.createContext("/logout", new LogoutView(userController));
-        server.createContext("/reservation", new ReservationView(userController));
-        server.createContext("/rentals", new RentalsView(userController));
         server.createContext("/customers", new CustomersView(userController));
         server.createContext("/customer/", new CustomerDetailsView(userController));
+        server.createContext("/rentals", new RentalsView(userController));
+        // server.createContext("/rental/", new RentalDetailsView(userController));
+        server.createContext("/vehicles", new VehiclesView(userController));
+        // server.createContext("/vehicle/", new VehicleDetailsView(userController));
         server.createContext("/distributions", new DistributionsView(userController));
+        // server.createContext("/distribution/", new DistributionDetailsView(userController));
+        server.createContext("/stats", new StatsView(userController));
 
         server.start();
         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE))

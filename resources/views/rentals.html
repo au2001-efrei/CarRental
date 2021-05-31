@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      font-family: Verdana, Tahoma, sans-serif;
+      background: url('https://images.unsplash.com/photo-1598133393119-928abec9a7f2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2000&q=80');
+      background-position: top;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    
+    header {
+      max-width: 1000px;
+      width: 100%;
+      background: #fff;
+      margin: 25px 0 25px 0;
+      border-radius: 25px;
+    }
+    
+    .width {
+      width: 100%;
+    }
+    
+    h1 {
+      text-align: center;
+      margin: 25px;
+      color: #11d2f0;
+    }
+    
+    body {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    main {
+      width: 100%;
+    }
+    
+    .head-form {
+      max-width: 1000px;
+      width: 100%;
+      /* height: 70px; */
+      border-radius: 25px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    }
+    
+    .time {
+      margin-top: 20px;
+      width: 30%;
+      height: 40px;
+      text-align: center;
+    }
+    
+    :disabled {
+      opacity: .5;
+    }
+    
+    .img {
+      display: block;
+      height: 100px;
+      width: 100px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 50px;
+      border-radius: 100%;
+      box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.25);
+    }
+    
+    input {
+      background-color: #C4C4C4;
+      border-radius: 20px;
+      height: 40px;
+      width: 30%;
+      margin: 5px;
+      padding: 10px;
+      border: none;
+      font-size: 12px;
+      color: black;
+      flex-grow: 1;
+    }
+    
+    input[type="date"] {
+      width: 45%;
+    }
+    
+    .time {
+      flex-grow: 1;
+      width: 60%;
+    }
+    
+    ::placeholder {
+      color: black;
+    }
+    
+    .wrapper {
+      height: 40px;
+      width: 25%;
+      margin: 5px;
+      border-radius:20px;
+      display:inline-block;
+      overflow:hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-grow: 1;
+    }
+    
+    select {
+      background-color: #C4C4C4;
+      border-radius: 20px;
+      height: 100%;
+      width: 100%;
+      padding: 3px;
+      border: none;
+      outline: none;
+    }
+    
+    textarea {
+      vertical-align: top;
+      height: 5em;
+    }
+    
+    form {
+      max-width: 1000px;
+      margin: 10px;
+      background-color: white;
+      margin-right: auto;
+      margin-left: auto;
+      position: sticky;
+      top: 10;
+    }
+    .flex {
+      display: flex;
+    }
+    .fix {
+      position: fixed;
+      top: 0px;
+      margin-left: 12%;
+    }
+    
+    .table {
+      max-width: 1000px;
+    }
+    
+    #email:invalid,
+    #first_name:invalid,
+    #family_name:invalid {
+      caret-color: red;
+      border-bottom: 3px solid red;
+    }
+    
+    /* main */
+    
+    .tableau {
+      max-width: 1000px;
+      width: 100%;
+      background-color: white;
+      border-radius: 25px;
+      overflow:hidden;
+      margin: 50px auto 50px auto;
+    }
+    
+    th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: center;
+      /* background-color: #4CAF50; */
+      color: black;
+      font-weight: bold;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #e9e9e9;
+    }
+    
+    tr:last-child {
+      background-color: white;
+    }
+    
+    tr:last-child td {
+      border-bottom: none;
+    }
+    
+    td {
+      text-align: center;
+      padding-top: 12px;
+      padding-bottom: 12px;
+      padding: 8px;
+      border-bottom: 1px solid black;
+    }
+    
+    .not {
+      background-color: crimson;
+    }
+    
+    .not-not {
+      background-color: lightgreen;
+    }
+    
+    nav {
+      width: 100vw;
+      display:flex;
+      background-color: #11d2f0;
+      justify-content: space-around;
+      padding:20px 0;
+      color:#FFF;
+      align-items: center;
+    }
+    
+    ul {
+      display:flex;
+      list-style: none;
+      width:40%;
+      justify-content: space-between;
+    }
+    
+    nav ul li a {
+      color:#FFF;
+      text-decoration: none;
+      font-size: 1em;
+    }
+  </style>
+  <title>Car Rental &mdash; Clients</title>
+</head>
+<body>
+  <nav>
+    <div class="logo">
+      <h2>Car Rental</h2>
+    </div>
+    <ul>
+      <li><a href="/customers">Customers</a></li>
+      <li><a href="/rentals">Rentals</a></li>
+      <li><a href="/vehicles">Cars</a></li>
+      <li><a href="/distributions">Distributions</a></li>
+      <li><a href="/logout">Logout</a></li>
+    </ul>
+  </nav>
+  <header>
+    <h1>Reservations &amp; Rentals</h1>
+  </header>
+  <div class="width"></div>
+  <form class="head-form" id="myheader" onsubmit="return addContent()" >
+    <input type="text" id="customer_id" placeholder="Customer ID" required/>
+    <input type="text" id="license_plate" placeholder="License Plate" required/>
+    <input type="text" id="agency_id" placeholder="Agency ID" required/>
+    <input type="date" id="date" placeholder="Date"/>
+    <input type="date" id="return_date" placeholder="Date"/>
+    <input class="not-not disabled" type="submit" id="sub" value="SUBMIT" onclick="checkStatus()"/>
+  </form>
+  <main>
+    <table class="tableau" id="myTable">
+      <thead>
+        <tr>
+          <th>Rental ID</th>
+          <th>Customer ID</th>
+          <th>Lincense Plate</th>
+          <th>Agency</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody id="table" class="color">
+      </tbody>
+    </table>
+  </main>
+  <script>
+      function addContent(){
+        var table = document.getElementById("table");
+        var row = document.createElement("TR");
+        table.appendChild(row);
+        var cell1 = document.createElement("TD");
+        row.appendChild(cell1);
+        var cell2 = document.createElement("TD");
+        row.appendChild(cell2);
+
+        var cell3 = document.createElement("TD");
+        row.appendChild(cell3);
+
+        var cell4 = document.createElement("TD");
+        row.appendChild(cell4);
+        cell1.innerHTML = document.getElementById("first_name").value;
+        cell2.innerHTML = document.getElementById("family_name").value;
+        cell3.innerHTML = document.getElementById("email").value;
+        cell4.innerHTML = document.getElementById("object").value;
+
+        return false;
+      }
+    </script>
+  </body>
+</html>
+    

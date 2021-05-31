@@ -14,7 +14,7 @@ public class HomeView extends AuthenticatedView {
     @Override
     protected HTTPResponse handleGet(HttpExchange exchange) {
         HTTPResponse response = new HTTPResponse(302);
-        response.getHeaders().set("Location", "/reservations");
+        response.getHeaders().set("Location", "/rentals");
         return response;
     }
 

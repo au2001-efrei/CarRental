@@ -8,10 +8,10 @@ import net.efrei.s6.databases.aurelducyoni.gui.HTTPResponse;
 import java.io.IOException;
 import java.util.Map;
 
-public class RentalsView extends AuthenticatedView {
+public class VehiclesView extends AuthenticatedView {
 
-    public RentalsView(UserController userController) throws IOException {
-        super("rentals", userController);
+    public VehiclesView(UserController userController) throws IOException {
+        super("vehicles", userController);
     }
 
     @Override
