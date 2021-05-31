@@ -504,7 +504,7 @@ public class MySQLDatastore implements Datastore {
     public Invoice getInvoice(int id) {
         try (PreparedStatement statement = connection.prepareStatement(
             "SELECT * FROM Invoice " +
-                "LEFT JOIN Return ON Return.rental_reservation_id = Invoice.return_rental_reservation_id " +
+                "LEFT JOIN `Return` ON `Return`.rental_reservation_id = Invoice.return_rental_reservation_id " +
                 "WHERE Invoice.id = ?"
         )) {
             statement.setInt(1, id);
@@ -524,7 +524,7 @@ public class MySQLDatastore implements Datastore {
         try (Statement statement = connection.createStatement()) {
             try (ResultSet resultSet = statement.executeQuery(
                 "SELECT * FROM Invoice " +
-                    "LEFT JOIN Return ON Return.rental_reservation_id = Invoice.return_rental_reservation_id"
+                    "LEFT JOIN `Return` ON `Return`.rental_reservation_id = Invoice.return_rental_reservation_id"
             )) {
                 List<Invoice> invoices = new LinkedList<>();
                 while (resultSet.next())
@@ -1003,7 +1003,7 @@ public class MySQLDatastore implements Datastore {
     @Override
     public Return createReturn(Rental rental, Agency agency, Employee employee, Date date, int fuelConsumption, int damageLevel) {
         try (PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO Return " +
+                "INSERT INTO `Return` " +
                     "(rental_reservation_id, agency_id, employee_id, date, fuel_consumption, damage_level) " +
                     "VALUES (?, ?, ?, ?, ?, ?)",
                 Statement.NO_GENERATED_KEYS
@@ -1039,11 +1039,11 @@ public class MySQLDatastore implements Datastore {
     @Override
     public Return getReturn(int rentalReservationId) {
         try (PreparedStatement statement = connection.prepareStatement(
-            "SELECT * FROM Return " +
-                "LEFT JOIN Rental ON Rental.reservation_id = Return.rental_reservation_id " +
-                "LEFT JOIN Agency ON Agency.id = Reservation.agency_id " +
-                "LEFT JOIN Employee ON Employee.id = Reservation.employee_id " +
-                "WHERE Return.rental_reservation_id = ?"
+            "SELECT * FROM `Return` " +
+                "LEFT JOIN Rental ON Rental.reservation_id = `Return`.rental_reservation_id " +
+                "LEFT JOIN Agency ON Agency.id = `Return`.agency_id " +
+                "LEFT JOIN Employee ON Employee.id = `Return`.employee_id " +
+                "WHERE `Return`.rental_reservation_id = ?"
         )) {
             statement.setInt(1, rentalReservationId);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -1061,10 +1061,10 @@ public class MySQLDatastore implements Datastore {
     public List<Return> getReturnList() {
         try (Statement statement = connection.createStatement()) {
             try (ResultSet resultSet = statement.executeQuery(
-                "SELECT * FROM Return" +
-                    "LEFT JOIN Rental ON Rental.reservation_id = Return.rental_reservation_id " +
-                    "LEFT JOIN Agency ON Agency.id = Reservation.agency_id " +
-                    "LEFT JOIN Employee ON Employee.id = Reservation.employee_id"
+                "SELECT * FROM `Return` " +
+                    "LEFT JOIN Rental ON Rental.reservation_id = `Return`.rental_reservation_id " +
+                    "LEFT JOIN Agency ON Agency.id = `Return`.agency_id " +
+                    "LEFT JOIN Employee ON Employee.id = `Return`.employee_id"
             )) {
                 List<Return> returns = new LinkedList<>();
                 while (resultSet.next())
@@ -1099,7 +1099,7 @@ public class MySQLDatastore implements Datastore {
 
     @Override
     public boolean deleteReturn(int rentalReservationId) {
-        try (PreparedStatement statement = connection.prepareStatement("DELETE FROM Return WHERE Return.rental_reservation_id = ?")) {
+        try (PreparedStatement statement = connection.prepareStatement("DELETE FROM `Return` WHERE `Return`.rental_reservation_id = ?")) {
             statement.setInt(1, rentalReservationId);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -1395,7 +1395,7 @@ public class MySQLDatastore implements Datastore {
     }
 
     private Return parseReturn(ResultSet resultSet) throws SQLException {
-        return parseReturn(resultSet, "Return");
+        return parseReturn(resultSet, "`Return`");
     }
 
     private Return parseReturn(ResultSet resultSet, String tableName) throws SQLException {
