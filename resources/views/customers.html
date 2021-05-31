@@ -209,10 +209,44 @@
       .third {
         width: 30%;
       }
+      nav {
+        width: 100vw;
+        display:flex;
+        background-color: #11d2f0;
+        justify-content: space-around;
+        padding:20px 0;
+        color:#FFF;
+        align-items: center;
+      }
+
+      ul {
+        display:flex;
+        list-style: none;
+        width:40%;
+        justify-content: space-between;
+      }
+
+      nav ul li a {
+        color:#FFF;
+        text-decoration: none;
+        font-size: 1em;
+      }
     </style>
     <title>Car Rental &mdash; Customers</title>
   </head>
   <body>
+    <nav>
+      <div class="logo">
+        <h2>Car Rental</h2>
+      </div>
+      <ul>
+        <li><a href="/customers">Customers</a></li>
+        <li><a href="/rentals">Rentals</a></li>
+        <li><a href="/vehicles">Cars</a></li>
+        <li><a href="/distributions">Distributions</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </nav>
     <header>
       <h1>Car Rental — Customers</h1>
     </header>
@@ -226,6 +260,11 @@
       <input type="text" name="postal_code" placeholder="Postal code" />
       <input type="text" name="city" placeholder="City" />
       <input class="not-not disabled" type="submit" id="sub" value="Add customer" />
+    </form>
+    <div class="width"></div>
+    <form class="head-form" style="width: 100%;">
+      <input class="third" type="text" id="customer_id" placeholder="Customer ID" required />
+      <input class="not-not disabled" type="submit" id="search" value="Search" onclick="" />
     </form>
     <main>
       <table>
