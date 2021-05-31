@@ -25,6 +25,7 @@ public interface Datastore extends Closeable {
     Customer createCustomer(String firstName, String lastName, String streetNumber, String streetName, String postalCode, String city, String phone);
     Customer getCustomer(int id);
     List<Customer> getCustomerList();
+    List<Customer> searchCustomers(String search);
     boolean updateCustomer(Customer customer);
     boolean deleteCustomer(Customer customer);
     boolean deleteCustomer(int id);

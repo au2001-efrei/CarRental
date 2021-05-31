@@ -41,7 +41,14 @@ public class UserController {
     }
 
     public List<Customer> getCustomerList() {
-        List<Customer> customers = new ArrayList<>(datastore.getCustomerList());
+        return searchCustomers(null);
+    }
+
+    public List<Customer> searchCustomers(String search) {
+        if (search != null && search.isEmpty())
+            search = null;
+
+        List<Customer> customers = new ArrayList<>(search != null ? datastore.searchCustomers(search) : datastore.getCustomerList());
         customers.sort(new Comparator<Customer>() {
 
             @Override

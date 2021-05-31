@@ -36,7 +36,7 @@ public abstract class View implements HttpHandler {
         String queryString = exchange.getRequestURI().getQuery();
 
         Map<String, String> body = new HashMap<>();
-        if (queryString.isEmpty())
+        if (queryString == null || queryString.isEmpty())
             return body;
 
         for (String param : queryString.split("&")) {

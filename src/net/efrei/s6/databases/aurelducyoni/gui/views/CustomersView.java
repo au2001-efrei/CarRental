@@ -20,13 +20,17 @@ public class CustomersView extends AuthenticatedView {
 
     @Override
     protected HTTPResponse handleGet(HttpExchange exchange) {
+        Map<String, String> query = getQuery(exchange);
+        String search = query.get("q");
+
         assert template != null;
         String body = template;
 
         List<Map<String, ?>> customers = new LinkedList<>();
-        for (Customer customer : userController.getCustomerList())
+        for (Customer customer : userController.searchCustomers(search))
             customers.add(customer.toJSON());
         body = body.replace("{{customers}}", JSON.stringify(customers));
+        body = body.replace("{{query}}", JSON.stringify(search));
 
         return new HTTPResponse(body);
     }
@@ -60,6 +64,7 @@ public class CustomersView extends AuthenticatedView {
         for (Customer customer : userController.getCustomerList())
             customers.add(customer.toJSON());
         body = body.replace("{{customers}}", JSON.stringify(customers));
+        body = body.replace("{{query}}", JSON.stringify((String) null));
 
         return new HTTPResponse(body);
     }

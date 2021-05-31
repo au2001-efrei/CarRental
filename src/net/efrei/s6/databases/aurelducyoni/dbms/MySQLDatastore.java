@@ -242,6 +242,22 @@ public class MySQLDatastore implements Datastore {
     }
 
     @Override
+    public List<Customer> searchCustomers(String search) {
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM Customer WHERE LOWER(CONCAT(first_name, ' ', last_name)) LIKE LOWER(CONCAT('%', ?, '%'))")) {
+            statement.setString(1, search);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                List<Customer> customers = new LinkedList<>();
+                while (resultSet.next())
+                    customers.add(parseCustomer(resultSet));
+                return Collections.unmodifiableList(customers);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public boolean updateCustomer(Customer customer) {
         return false; // TODO
     }

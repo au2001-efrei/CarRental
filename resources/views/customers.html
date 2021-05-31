@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script>const customers = {{customers}};</script>
+    <script>const customers = {{customers}}; const query = {{query}};</script>
     <style>
       * {
         margin: 0;
@@ -203,6 +203,7 @@
       }
 
       .not-not {
+        cursor: pointer;
         background-color: lightgreen;
       }
 
@@ -262,9 +263,9 @@
       <input class="not-not disabled" type="submit" id="sub" value="Add customer" />
     </form>
     <div class="width"></div>
-    <form class="head-form" style="width: 100%;">
-      <input class="third" type="text" id="customer_id" placeholder="Customer ID" required />
-      <input class="not-not disabled" type="submit" id="search" value="Search" onclick="" />
+    <form class="head-form" style="width: 100%;" action="/customers" method="GET">
+      <input class="third" type="text" id="search" name="q" placeholder="Customer name" />
+      <input class="not-not disabled" type="submit" value="Search" onclick="" />
     </form>
     <main>
       <table>
@@ -311,6 +312,11 @@
 
         $table.appendChild($row);
       });
+
+      if (query !== null) {
+        const $search = document.getElementById("search");
+        $search.value = query;
+      }
     </script>
   </body>
 </html>
