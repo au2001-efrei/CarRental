@@ -242,22 +242,6 @@ public class MySQLDatastore implements Datastore {
     }
 
     @Override
-    public List<Customer> searchCustomers(String search) {
-        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM Customer WHERE LOWER(CONCAT(first_name, ' ', last_name)) LIKE LOWER(CONCAT('%', ?, '%'))")) {
-            statement.setString(1, search);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                List<Customer> customers = new LinkedList<>();
-                while (resultSet.next())
-                    customers.add(parseCustomer(resultSet));
-                return Collections.unmodifiableList(customers);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
     public boolean updateCustomer(Customer customer) {
         return false; // TODO
     }
@@ -1230,7 +1214,10 @@ public class MySQLDatastore implements Datastore {
     @Override
     public List<Vehicle> getVehicleList() {
         try (Statement statement = connection.createStatement()) {
-            try (ResultSet resultSet = statement.executeQuery("SELECT * FROM Vehicle")) {
+            try (ResultSet resultSet = statement.executeQuery(
+                "SELECT * FROM Vehicle " +
+                    "LEFT JOIN Category ON Category.name = Vehicle.category_name"
+            )) {
                 List<Vehicle> vehicles = new LinkedList<>();
                 while (resultSet.next())
                     vehicles.add(parseVehicle(resultSet));
@@ -1322,7 +1309,18 @@ public class MySQLDatastore implements Datastore {
     }
 
     private Distribution parseDistribution(ResultSet resultSet, String tableName) throws SQLException {
-        return null; // TODO
+        int id = resultSet.getInt(tableName + ".id");
+        Employee employee = parseEmployee(resultSet);
+        Truck truck = parseTruck(resultSet);
+        Date date = resultSet.getDate(tableName + ".date");
+        Agency source = parseAgency(resultSet, "SourceAgency");
+        Agency destination = parseAgency(resultSet, "DestinationAgency");
+
+        List<Vehicle> vehicles = Collections.emptyList(); // TODO
+
+        Distribution distribution = new Distribution(id, employee, truck, date, source, destination, vehicles);
+        distribution.addObserver(this::updateDistribution);
+        return distribution;
     }
 
     private Employee parseEmployee(ResultSet resultSet) throws SQLException {
@@ -1351,7 +1349,16 @@ public class MySQLDatastore implements Datastore {
     }
 
     private Invoice parseInvoice(ResultSet resultSet, String tableName) throws SQLException {
-        return null; // TODO
+        int id = resultSet.getInt(tableName + ".id");
+        Return aReturn = parseReturn(resultSet);
+        double amount = resultSet.getDouble(tableName + ".amount");
+        double durationPenalty = resultSet.getDouble(tableName + ".duration_penalty");
+        double fuelCharge = resultSet.getDouble(tableName + ".fuel_charge");
+        double damagePenalty = resultSet.getDouble(tableName + ".damage_penalty");
+
+        Invoice invoice = new Invoice(id, aReturn, amount, durationPenalty, fuelCharge, damagePenalty);
+        invoice.addObserver(this::updateInvoice);
+        return invoice;
     }
 
     private LoyaltyProgram parseLoyaltyProgram(ResultSet resultSet) throws SQLException {
@@ -1359,7 +1366,15 @@ public class MySQLDatastore implements Datastore {
     }
 
     private LoyaltyProgram parseLoyaltyProgram(ResultSet resultSet, String tableName) throws SQLException {
-        return null; // TODO
+        String name = resultSet.getString(tableName + ".name");
+        int duration = resultSet.getInt(tableName + ".duration");
+        String description = resultSet.getString(tableName + ".description");
+        double price = resultSet.getDouble(tableName + ".price");
+        double discountRate = resultSet.getDouble(tableName + ".discount_rate");
+
+        LoyaltyProgram loyaltyProgram = new LoyaltyProgram(name, duration, description, price, discountRate);
+        loyaltyProgram.addObserver(this::updateLoyaltyProgram);
+        return loyaltyProgram;
     }
 
     private LoyaltySubscription parseLoyaltySubscription(ResultSet resultSet) throws SQLException {
@@ -1367,7 +1382,14 @@ public class MySQLDatastore implements Datastore {
     }
 
     private LoyaltySubscription parseLoyaltySubscription(ResultSet resultSet, String tableName) throws SQLException {
-        return null; // TODO
+        int id = resultSet.getInt(tableName + ".id");
+        Customer customer = parseCustomer(resultSet);
+        LoyaltyProgram loyaltyProgram = parseLoyaltyProgram(resultSet);
+        Date subscriptionDate = resultSet.getDate(tableName + ".subscription_date");
+
+        LoyaltySubscription loyaltySubscription = new LoyaltySubscription(id, customer, loyaltyProgram, subscriptionDate);
+        loyaltySubscription.addObserver(this::updateLoyaltySubscription);
+        return loyaltySubscription;
     }
 
     private Quote parseQuote(ResultSet resultSet) throws SQLException {
@@ -1375,7 +1397,13 @@ public class MySQLDatastore implements Datastore {
     }
 
     private Quote parseQuote(ResultSet resultSet, String tableName) throws SQLException {
-        return null; // TODO
+        int id = resultSet.getInt(tableName + ".id");
+        Reservation reservation = parseReservation(resultSet);
+        double amount = resultSet.getDouble(tableName + ".amount");
+
+        Quote quote = new Quote(id, reservation, amount);
+        quote.addObserver(this::updateQuote);
+        return quote;
     }
 
     private Rental parseRental(ResultSet resultSet) throws SQLException {
@@ -1383,7 +1411,16 @@ public class MySQLDatastore implements Datastore {
     }
 
     private Rental parseRental(ResultSet resultSet, String tableName) throws SQLException {
-        return null; // TODO
+        Reservation reservation = parseReservation(resultSet);
+        Employee employee = parseEmployee(resultSet);
+        Date date = resultSet.getDate(tableName + ".date");
+        boolean damageInsurance = resultSet.getBoolean(tableName + ".damage_insurance");
+        boolean accidentInsurance = resultSet.getBoolean(tableName + ".accident_insurance");
+        int duration = resultSet.getInt(tableName + ".duration");
+
+        Rental rental = new Rental(reservation, employee, date, damageInsurance, accidentInsurance, duration);
+        rental.addObserver(this::updateRental);
+        return rental;
     }
 
     private Reservation parseReservation(ResultSet resultSet) throws SQLException {
@@ -1391,7 +1428,16 @@ public class MySQLDatastore implements Datastore {
     }
 
     private Reservation parseReservation(ResultSet resultSet, String tableName) throws SQLException {
-        return null; // TODO
+        int id = resultSet.getInt(tableName + ".id");
+        Agency agency = parseAgency(resultSet);
+        Customer customer = parseCustomer(resultSet);
+        Vehicle vehicle = parseVehicle(resultSet);
+        Employee employee = parseEmployee(resultSet);
+        int expectedDuration = resultSet.getInt(tableName + ".expected_duration");
+
+        Reservation reservation = new Reservation(id, agency, customer, vehicle, employee, expectedDuration);
+        reservation.addObserver(this::updateReservation);
+        return reservation;
     }
 
     private Return parseReturn(ResultSet resultSet) throws SQLException {
@@ -1399,7 +1445,16 @@ public class MySQLDatastore implements Datastore {
     }
 
     private Return parseReturn(ResultSet resultSet, String tableName) throws SQLException {
-        return null; // TODO
+        Rental rental = parseRental(resultSet);
+        Agency agency = parseAgency(resultSet);
+        Employee employee = parseEmployee(resultSet);
+        Date date = resultSet.getDate(tableName + ".date");
+        int fuelConsumption = resultSet.getInt(tableName + ".fuel_consumption");
+        int damageLevel = resultSet.getInt(tableName + ".damage_level");
+
+        Return aReturn = new Return(rental, agency, employee, date, fuelConsumption, damageLevel);
+        aReturn.addObserver(this::updateReturn);
+        return aReturn;
     }
 
     private Truck parseTruck(ResultSet resultSet) throws SQLException {
@@ -1407,7 +1462,11 @@ public class MySQLDatastore implements Datastore {
     }
 
     private Truck parseTruck(ResultSet resultSet, String tableName) throws SQLException {
-        return null; // TODO
+        String licensePlate = resultSet.getString(tableName + ".license_plate");
+
+        Truck truck = new Truck(licensePlate);
+        truck.addObserver(this::updateTruck);
+        return truck;
     }
 
     private Vehicle parseVehicle(ResultSet resultSet) throws SQLException {
@@ -1415,7 +1474,18 @@ public class MySQLDatastore implements Datastore {
     }
 
     private Vehicle parseVehicle(ResultSet resultSet, String tableName) throws SQLException {
-        return null; // TODO
+        String licensePlate = resultSet.getString(tableName + ".license_plate");
+        String brand = resultSet.getString(tableName + ".brand");
+        String model = resultSet.getString(tableName + ".model");
+        int mileage = resultSet.getInt(tableName + ".mileage");
+        boolean automatic = resultSet.getBoolean(tableName + ".automatic");
+        boolean airConditioned = resultSet.getBoolean(tableName + ".air_conditioned");
+        String fuel = resultSet.getString(tableName + ".fuel");
+        Category category = parseCategory(resultSet);
+
+        Vehicle vehicle = new Vehicle(licensePlate, brand, model, mileage, automatic, airConditioned, fuel, category);
+        vehicle.addObserver(this::updateVehicle);
+        return vehicle;
     }
 
     @Override
