@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>const customers = {{customers}}; const vehicles = {{vehicles}}; const agencies = {{agencies}}; const rentals = {{rentals}};</script>
   <style>
     * {
       margin: 0;
@@ -81,7 +82,7 @@
       box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.25);
     }
     
-    input {
+    input, select {
       background-color: #C4C4C4;
       border-radius: 20px;
       height: 40px;
@@ -254,23 +255,30 @@
     <h1>Reservations &amp; Rentals</h1>
   </header>
   <div class="width"></div>
-  <form class="head-form" id="myheader" onsubmit="return addContent()" >
-    <input type="text" id="customer_id" placeholder="Customer ID" required/>
-    <input type="text" id="license_plate" placeholder="License Plate" required/>
-    <input type="text" id="agency_id" placeholder="Agency ID" required/>
-    <input type="date" id="date" placeholder="Date"/>
-    <input type="date" id="return_date" placeholder="Date"/>
+  <form class="head-form" id="myheader" onsubmit="return addContent()">
+    <select class="third" id="customer_id" name="customer_id" required>
+      <option value="" disabled selected>Select a customer...</option>
+    </select>
+    <select class="third" id="vehicle_license_plate" name="vehicle_license_plate" required>
+      <option value="" disabled selected>Select a vehicle...</option>
+    </select>
+    <select class="third" id="agency_id" name="agency_id" required>
+      <option value="" disabled selected>Select an agency...</option>
+    </select>
+    <input type="date" name="date" placeholder="Date" required />
+    <input type="number" name="duration" placeholder="Duration (days)" required />
     <input class="not-not disabled" type="submit" id="sub" value="SUBMIT" onclick="checkStatus()"/>
   </form>
   <main>
     <table class="tableau" id="myTable">
       <thead>
         <tr>
-          <th>Rental ID</th>
-          <th>Customer ID</th>
-          <th>Lincense Plate</th>
+          <th>ID</th>
+          <th>Customer</th>
+          <th>Vehicle</th>
           <th>Agency</th>
-          <th>Date</th>
+          <th>Insurance</th>
+          <th>Return date</th>
         </tr>
       </thead>
       <tbody id="table" class="color">
@@ -278,28 +286,75 @@
     </table>
   </main>
   <script>
-      function addContent(){
-        var table = document.getElementById("table");
-        var row = document.createElement("TR");
-        table.appendChild(row);
-        var cell1 = document.createElement("TD");
-        row.appendChild(cell1);
-        var cell2 = document.createElement("TD");
-        row.appendChild(cell2);
+      const $customerSelect = document.getElementById("customer_id");
+      customers.forEach(customer => {
+          const $customerOption = document.createElement("option");
+          $customerOption.value = customer.id;
+          $customerOption.innerText = `${customer.first_name} ${customer.last_name}`;
+          $customerSelect.append($customerOption);
+      });
 
-        var cell3 = document.createElement("TD");
-        row.appendChild(cell3);
+      const $vehicleSelect = document.getElementById("vehicle_license_plate");
+      vehicles.forEach(vehicle => {
+          const $vehicleOption = document.createElement("option");
+          $vehicleOption.value = vehicle.license_plate;
+          $vehicleOption.innerText = `${vehicle.brand} ${vehicle.model}`;
+          $vehicleSelect.append($vehicleOption);
+      });
 
-        var cell4 = document.createElement("TD");
-        row.appendChild(cell4);
-        cell1.innerHTML = document.getElementById("first_name").value;
-        cell2.innerHTML = document.getElementById("family_name").value;
-        cell3.innerHTML = document.getElementById("email").value;
-        cell4.innerHTML = document.getElementById("object").value;
+      const $agencySelect = document.getElementById("agency_id");
+      agencies.forEach(agency => {
+          const $agencyOption = document.createElement("option");
+          $agencyOption.value = agency.id;
+          $agencyOption.innerText = agency.name;
+          $agencySelect.append($agencyOption);
+      });
 
-        return false;
-      }
+      const $table = document.getElementById("table");
+      rentals.forEach(rental => {
+        const $row = document.createElement("tr");
+
+        const $idCell = document.createElement("td");
+        const $link = document.createElement("a");
+        $link.href = `/vehicle/${encodeURIComponent(rental.reservation.id)}`;
+        $link.innerText = `#${rental.reservation.id}`;
+        $idCell.appendChild($link);
+        $row.appendChild($idCell);
+
+        const $customerCell = document.createElement("td");
+        const $customerLink = document.createElement("a");
+        $customerLink.href = `/customer/${encodeURIComponent(rental.reservation.customer.id)}`;
+        $customerLink.innerText = `${rental.reservation.customer.first_name} ${rental.reservation.customer.last_name}`;
+        $customerCell.appendChild($customerLink);
+        $row.appendChild($customerCell);
+
+        const $vehicleCell = document.createElement("td");
+        const $vehicleLink = document.createElement("a");
+        $vehicleLink.href = `/vehicle/${encodeURIComponent(rental.reservation.vehicle.license_plate)}`;
+        $vehicleLink.innerText = `${rental.reservation.vehicle.brand} ${rental.reservation.vehicle.model}`;
+        $vehicleCell.appendChild($vehicleLink);
+        $row.appendChild($vehicleCell);
+
+        const $agencyCell = document.createElement("td");
+        $agencyCell.innerText = rental.reservation.agency.name;
+        $row.appendChild($agencyCell);
+
+        const $insuranceCell = document.createElement("td");
+        const insurance = [];
+        if (rental.damage_insurance) insurance.push("Damage");
+        if (rental.accident_insurance) insurance.push("Accident");
+        if (insurance.length > 0)
+          $insuranceCell.innerText = insurance.join(", ");
+        else $insuranceCell.innerHTML = "<i>No insurance</i>";
+        $row.appendChild($insuranceCell);
+
+        const $returnCell = document.createElement("td");
+        const dateFormat = new Intl.DateTimeFormat("en", {day: "numeric", month: "short", year: "numeric"});
+        $returnCell.innerText = dateFormat.format(new Date(rental.date + rental.duration * 24 * 60 * 60 * 1000));
+        $row.appendChild($returnCell);
+
+        $table.appendChild($row);
+      });
     </script>
   </body>
 </html>
-    
