@@ -51,11 +51,11 @@ public class Main {
         server.createContext("/logout", new LogoutView(userController));
         server.createContext("/customers", new CustomersView(userController));
         server.createContext("/customer/", new CustomerDetailsView(userController));
-        server.createContext("/distributions", new DistributionsView(userController));
         server.createContext("/rentals", new RentalsView(userController, rentalController, vehicleController));
         // server.createContext("/rental/", new RentalDetailsView(userController, rentalController, vehicleController));
         server.createContext("/vehicles", new VehiclesView(userController, rentalController, vehicleController));
         // server.createContext("/vehicle/", new VehicleDetailsView(userController, rentalController, vehicleController));
+        // server.createContext("/distributions", new DistributionsView(userController));
         // server.createContext("/distribution/", new DistributionDetailsView(userController));
         server.createContext("/stats", new StatsView(userController));
 
