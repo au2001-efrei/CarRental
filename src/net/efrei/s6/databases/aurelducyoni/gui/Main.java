@@ -1,7 +1,9 @@
 package net.efrei.s6.databases.aurelducyoni.gui;
 
 import com.sun.net.httpserver.HttpServer;
+import net.efrei.s6.databases.aurelducyoni.controllers.RentalController;
 import net.efrei.s6.databases.aurelducyoni.controllers.UserController;
+import net.efrei.s6.databases.aurelducyoni.controllers.VehicleController;
 import net.efrei.s6.databases.aurelducyoni.dbms.Datastore;
 import net.efrei.s6.databases.aurelducyoni.dbms.MySQLDatastore;
 import net.efrei.s6.databases.aurelducyoni.gui.views.*;
@@ -37,6 +39,8 @@ public class Main {
 
         // Controllers
         UserController userController = new UserController(datastore);
+        RentalController rentalController = new RentalController(datastore);
+        VehicleController vehicleController = new VehicleController(datastore);
 
         HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", 8001), 5);
         server.setExecutor(new ThreadPoolExecutor(0, 10, 1L, TimeUnit.MINUTES, new SynchronousQueue<>()));
@@ -47,11 +51,11 @@ public class Main {
         server.createContext("/logout", new LogoutView(userController));
         server.createContext("/customers", new CustomersView(userController));
         server.createContext("/customer/", new CustomerDetailsView(userController));
-        server.createContext("/rentals", new RentalsView(userController));
-        // server.createContext("/rental/", new RentalDetailsView(userController));
-        server.createContext("/vehicles", new VehiclesView(userController));
-        // server.createContext("/vehicle/", new VehicleDetailsView(userController));
         server.createContext("/distributions", new DistributionsView(userController));
+        server.createContext("/rentals", new RentalsView(userController, rentalController, vehicleController));
+        // server.createContext("/rental/", new RentalDetailsView(userController, rentalController, vehicleController));
+        server.createContext("/vehicles", new VehiclesView(userController, rentalController, vehicleController));
+        // server.createContext("/vehicle/", new VehicleDetailsView(userController, rentalController, vehicleController));
         // server.createContext("/distribution/", new DistributionDetailsView(userController));
         server.createContext("/stats", new StatsView(userController));
 

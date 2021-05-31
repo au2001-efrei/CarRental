@@ -1,320 +1,341 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>const rentals = {{rentals}}; const vehicles = {{vehicles}}; const query = {{query}};</script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        html {
-            font-family: Verdana, Tahoma, sans-serif;
-            background: url('https://images.unsplash.com/photo-1598133387813-be630df603fb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80');
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
-        
-        header {
-            max-width: 1000px;
-            width: 100%;
-            background: #fff;
-            margin: 25px 0 25px 0;
-            border-radius: 25px;
-        }
-        
-        .width {
-            width: 100%;
-        }
-        
-        h1 {
-            text-align: center;
-            margin: 25px;
-            color: #11d2f0;
-        }
-        
-        body {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        main {
-            width: 100%;
-        }
-        
-        .head-form {
-            max-width: 1000px;
-            width: 100%;
-            border-radius: 25px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
-        }
-        
-        .time {
-            margin-top: 20px;
-            width: 30%;
-            height: 40px;
-            text-align: center;
-        }
-        
-        :disabled {
-            opacity: .5;
-        }
-        
-        .img {
-            display: block;
-            height: 100px;
-            width: 100px;
-            margin-left: auto;
-            margin-right: auto;
-            margin-top: 50px;
-            border-radius: 100%;
-            box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.25);
-        }
-        
-        input {
-            background-color: #C4C4C4;
-            border-radius: 20px;
-            height: 40px;
-            width: 200px;
-            margin: 5px;
-            padding: 10px;
-            border: none;
-            font-size: 12px;
-            color: black;
-            flex-grow: 1;
-        }
-        
-        .time {
-            flex-grow: 1;
-            width: 60%;
-        }
-        
-        ::placeholder {
-            color: black;
-        }
-        
-        .wrapper {
-            height: 40px;
-            width: 200px;
-            margin: 5px;
-            border-radius:20px;
-            display:inline-block;
-            overflow:hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-grow: 1;
-        }
-        
-        select {
-            background-color: #C4C4C4;
-            border-radius: 20px;
-            height: 100%;
-            width: 100%;
-            padding: 3px;
-            border: none;
-            outline: none;
-        }
-        
-        textarea {
-            vertical-align: top;
-            height: 5em;
-        }
-        
-        form {
-            max-width: 1000px;
-            margin: 10px;
-            background-color: white;
-            margin-right: auto;
-            margin-left: auto;
-            position: sticky;
-            top: 10;
-        }
-        .flex {
-            display: flex;
-        }
-        .fix {
-            position: fixed;
-            top: 0px;
-            margin-left: 12%;
-        }
-        
-        .table {
-            max-width: 1000px;
-        }
-        
-        #email:invalid,
-        #first_name:invalid,
-        #family_name:invalid {
-            caret-color: red;
-            border-bottom: 3px solid red;
-        }
-        
-        /* main */
-        
-        .tableau {
-            max-width: 1000px;
-            width: 100%;
-            background-color: white;
-            border-radius: 25px;
-            overflow:hidden;
-            margin: 50px auto 50px auto;
-        }
-        
-        th {
-            padding-top: 12px;
-            padding-bottom: 12px;
-            text-align: center;
-            /* background-color: #4CAF50; */
-            color: black;
-            font-weight: bold;
-        }
-        
-        tr:nth-child(even) {
-            background-color: #e9e9e9;
-        }
-        
-        tr:last-child {
-            background-color: white;
-        }
-        
-        tr:last-child td {
-            border-bottom: none;
-        }
-        
-        td {
-            text-align: center;
-            padding-top: 12px;
-            padding-bottom: 12px;
-            padding: 8px;
-            border-bottom: 1px solid black;
-        }
-        
-        .not {
-            background-color: crimson;
-        }
-        
-        .not-not {
-            background-color: lightgreen;
-        }
-        
-        .third {
-            width: 30%;
-        }
-        
-        nav {
-            width: 100vw;
-            display:flex;
-            background-color: #11d2f0;
-            justify-content: space-around;
-            padding:20px 0;
-            color:#FFF;
-            align-items: center;
-        }
-        
-        ul {
-            display:flex;
-            list-style: none;
-            width:40%;
-            justify-content: space-between;
-        }
-        
-        nav ul li a {
-            color:#FFF;
-            text-decoration: none;
-            font-size: 1em;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        font-family: Verdana, Tahoma, sans-serif;
+        background: url('https://images.unsplash.com/photo-1598133387813-be630df603fb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80');
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      header {
+        max-width: 1000px;
+        width: 100%;
+        background: #fff;
+        margin: 25px 0 25px 0;
+        border-radius: 25px;
+      }
+
+      .width {
+        width: 100%;
+      }
+
+      h1 {
+        text-align: center;
+        margin: 25px;
+        color: #11d2f0;
+      }
+
+      body {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+      }
+
+      main {
+        width: 100%;
+      }
+
+      .head-form {
+        max-width: 1000px;
+        width: 100%;
+        border-radius: 25px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+      }
+
+      .time {
+        margin-top: 20px;
+        width: 30%;
+        height: 40px;
+        text-align: center;
+      }
+
+      :disabled {
+        opacity: .5;
+      }
+
+      .img {
+        display: block;
+        height: 100px;
+        width: 100px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 50px;
+        border-radius: 100%;
+        box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.25);
+      }
+
+      input, select {
+        background-color: #C4C4C4;
+        border-radius: 20px;
+        height: 40px;
+        width: 200px;
+        margin: 5px;
+        padding: 10px;
+        border: none;
+        font-size: 12px;
+        color: black;
+        flex-grow: 1;
+      }
+
+      .time {
+        flex-grow: 1;
+        width: 60%;
+      }
+
+      ::placeholder {
+        color: black;
+      }
+
+      .wrapper {
+        height: 40px;
+        width: 200px;
+        margin: 5px;
+        border-radius:20px;
+        display:inline-block;
+        overflow:hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1;
+      }
+
+      select {
+        background-color: #C4C4C4;
+        border-radius: 20px;
+        height: 100%;
+        width: 100%;
+        padding: 3px;
+        border: none;
+        outline: none;
+      }
+
+      textarea {
+        vertical-align: top;
+        height: 5em;
+      }
+
+      form {
+        max-width: 1000px;
+        margin: 10px;
+        background-color: white;
+        margin-right: auto;
+        margin-left: auto;
+        position: sticky;
+        top: 10;
+      }
+      .flex {
+        display: flex;
+      }
+      .fix {
+        position: fixed;
+        top: 0px;
+        margin-left: 12%;
+      }
+
+      .table {
+        max-width: 1000px;
+      }
+
+      #email:invalid,
+      #first_name:invalid,
+      #family_name:invalid {
+        caret-color: red;
+        border-bottom: 3px solid red;
+      }
+
+      /* main */
+
+      .tableau {
+        max-width: 1000px;
+        width: 100%;
+        background-color: white;
+        border-radius: 25px;
+        overflow:hidden;
+        margin: 50px auto 50px auto;
+      }
+
+      th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        /* background-color: #4CAF50; */
+        color: black;
+        font-weight: bold;
+      }
+
+      tr:nth-child(even) {
+        background-color: #e9e9e9;
+      }
+
+      tr:last-child {
+        background-color: white;
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      td {
+        text-align: center;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        padding: 8px;
+        border-bottom: 1px solid black;
+      }
+
+      .not {
+        background-color: crimson;
+      }
+
+      .not-not {
+        background-color: lightgreen;
+      }
+
+      .third {
+        width: 30%;
+      }
+
+      nav {
+        width: 100vw;
+        display:flex;
+        background-color: #11d2f0;
+        justify-content: space-around;
+        padding:20px 0;
+        color:#FFF;
+        align-items: center;
+      }
+
+      ul {
+        display:flex;
+        list-style: none;
+        width:40%;
+        justify-content: space-between;
+      }
+
+      nav ul li a {
+        color:#FFF;
+        text-decoration: none;
+        font-size: 1em;
+      }
     </style>
     <title>Car Rental &mdash; Clients</title>
-</head>
-<body>
+  </head>
+  <body>
     <nav>
-        <div class="logo">
-            <h2>Car Rental</h2>
-        </div>
-        <ul>
-            <li><a href="/customers">Customers</a></li>
-            <li><a href="/rentals">Rentals</a></li>
-            <li><a href="/vehicles">Cars</a></li>
-            <li><a href="/distributions">Distributions</a></li>
-            <li><a href="/logout">Logout</a></li>
-        </ul>
+      <div class="logo">
+        <h2>Car Rental</h2>
+      </div>
+      <ul>
+        <li><a href="/customers">Customers</a></li>
+        <li><a href="/rentals">Rentals</a></li>
+        <li><a href="/vehicles">Cars</a></li>
+        <li><a href="/stats">Stats</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
     </nav>
     <header>
-        <h1>Available Cars</h1>
+      <h1>Available Cars</h1>
     </header>
     <div class="width"></div>
-    <form class="head-form" id="myheader" onsubmit="return addContent()" >
-        <input class="third" type="text" id="rental_id" placeholder="Rental ID" required/>
-        <input class="third" type="date" id="date" placeholder="Date" required/>
-        <input class="third" type="number" id="damage" placeholder="Damage" required/>
-        <input class="third" type="number" id="fuel" placeholder="Fuel Consumption" required/>
-        <input class="not-not disabled" type="submit" id="sub" value="RETURN" onclick="checkStatus()" style="width: 100%;"/>
-        <div class="time">
-            <p id="timer"></p>
-        </div>
+    <form class="head-form" id="myheader" action="/vehicles" method="POST">
+      <select class="third" id="rental_reservation_id" name="rental_reservation_id" required>
+        <option value="" disabled selected>Select a rental...</option>
+      </select>
+      <input class="third" type="date" id="date" placeholder="Date" required />
+      <input class="third" type="number" id="damage" placeholder="Damage" required />
+      <input class="third" type="number" id="fuel" placeholder="Fuel Consumption" required />
+      <input class="not-not disabled" type="submit" id="sub" value="Return car" />
     </form>
     <div style="width: 100vw;"></div>
     <form class="head-form" style="width: 100%;">
-        <input class="third" type="text" id="license_plate" placeholder="License Plate" required/>
-        <input class="not-not disabled" type="submit" id="search" value="Search" onclick="" style="width: 100%;"/>
+      <input class="third" type="text" name="q" placeholder="Car model or category" />
+      <input class="not-not disabled" type="submit" id="search" value="Search" onclick="" style="width: 100%;"/>
     </form>
     <main>
-        <table class="tableau" id="myTable">
-            <thead>
-                <tr>
-                    <th>License Plate</th>
-                    <th>Brand</th>
-                    <th>Model</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody id="table" class="color">
-            </tbody>
-        </table>
+      <table class="tableau" id="myTable">
+        <thead>
+          <tr>
+            <th>License Plate</th>
+            <th>Model</th>
+            <th>Mileage</th>
+            <th>Options</th>
+            <th>Fuel type</th>
+            <th>Category</th>
+          </tr>
+        </thead>
+        <tbody id="table" class="color">
+        </tbody>
+      </table>
     </main>
-    
     <script>
-        
-        function addContent(){
-            var table = document.getElementById("table");
-            var row = document.createElement("TR");
-            table.appendChild(row);
-            var cell1 = document.createElement("TD");
-            row.appendChild(cell1);
-            var cell2 = document.createElement("TD");
-            row.appendChild(cell2);
-            
-            var cell3 = document.createElement("TD");
-            row.appendChild(cell3);
-            
-            var cell4 = document.createElement("TD");
-            row.appendChild(cell4);
-            cell1.innerHTML = document.getElementById("first_name").value;
-            cell2.innerHTML = document.getElementById("family_name").value;
-            cell3.innerHTML = document.getElementById("email").value;
-            cell4.innerHTML = document.getElementById("object").value;
-            
-            
-            return false;
-        }
-        
-        function removeContent(){
-            var table = document.getElementById("table");
-            table.innerHTML = "";
-        }
-        
-        window.onload = timer;
-        
+      const $rentalSelect = document.getElementById("rental_reservation_id");
+      rentals.forEach(rental => {
+          const $rentalOption = document.createElement("option");
+          $rentalOption.value = rental.reservation_id;
+          $rentalOption.innerText = `${rental.reservation.vehicle.brand} ${rental.reservation.vehicle.model} - ${rental.reservation.customer.first_name} ${rental.reservation.customer.last_name}`;
+          $rentalSelect.append($rentalOption);
+      });
+
+      const $table = document.getElementById("table");
+      vehicles.forEach(vehicle => {
+        const $row = document.createElement("tr");
+
+        const $licensePlateCell = document.createElement("td");
+        const $link = document.createElement("a");
+        $link.href = `/vehicle/${encodeURIComponent(vehicle.license_plate)}`;
+        $link.innerText = vehicle.license_plate;
+        $licensePlateCell.appendChild($link);
+        $row.appendChild($licensePlateCell);
+
+        const $modelCell = document.createElement("td");
+        $modelCell.innerText = `${vehicle.brand} ${vehicle.model}`;
+        $row.appendChild($modelCell);
+
+        const $mileageCell = document.createElement("td");
+        $mileageCell.innerText = `≥ ${vehicle.mileage} km`;
+        $row.appendChild($mileageCell);
+
+        const $optionsCell = document.createElement("td");
+        const options = [];
+        if (vehicle.automatic) options.push("Automatic");
+        if (vehicle.air_conditioned) options.push("Air conditioning");
+        if (options.length > 0)
+          $optionsCell.innerText = options.join(", ");
+        else $optionsCell.innerHTML = "<i>No options</i>";
+        $row.appendChild($optionsCell);
+
+        const $fuelCell = document.createElement("td");
+        $fuelCell.innerText = vehicle.fuel;
+        $row.appendChild($fuelCell);
+
+        const $categoryCell = document.createElement("td");
+        $categoryCell.innerText = vehicle.category.name;
+        $row.appendChild($categoryCell);
+
+        $table.appendChild($row);
+      });
+
+      if (query !== null) {
+        const $search = document.getElementById("search");
+        $search.value = query;
+      }
     </script>
-</body>
+  </body>
 </html>
