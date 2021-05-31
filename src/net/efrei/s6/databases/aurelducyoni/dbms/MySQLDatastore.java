@@ -271,7 +271,7 @@ public class MySQLDatastore implements Datastore {
     public Distribution getDistribution(int id) {
         try (PreparedStatement statement = connection.prepareStatement(
             "SELECT * FROM Distribution " +
-                "LEFT JOIN Employee ON Employee.id = Distribution.employee_id " +
+                "LEFT JOIN Employee ON DistributionEmployee.id = Distribution.employee_id " +
                 "LEFT JOIN Truck ON Truck.license_plate = Distribution.truck_license_plate " +
                 "LEFT JOIN Agency AS SourceAgency ON SourceAgency.id = Distribution.source_agency_id " +
                 "LEFT JOIN Agency AS DestinationAgency ON DestinationAgency.id = Distribution.destination_agency_id " +
@@ -829,7 +829,12 @@ public class MySQLDatastore implements Datastore {
         try (PreparedStatement statement = connection.prepareStatement(
             "SELECT * FROM Rental " +
                 "LEFT JOIN Reservation ON Reservation.id = Rental.reservation_id " +
-                "LEFT JOIN Employee ON Employee.id = Rental.employee_id " +
+                "LEFT JOIN Agency ON Agency.id = Reservation.agency_id " +
+                "LEFT JOIN Customer ON Customer.id = Reservation.customer_id " +
+                "LEFT JOIN Vehicle ON Vehicle.license_plate = Reservation.vehicle_license_plate " +
+                "LEFT JOIN Category ON Category.name = Vehicle.category_name " +
+                "LEFT JOIN Employee AS ReservationEmployee ON ReservationEmployee.id = Reservation.employee_id " +
+                "LEFT JOIN Employee AS RentalEmployee ON RentalEmployee.id = Rental.employee_id " +
                 "WHERE Rental.reservation_id = ?"
         )) {
             statement.setInt(1, reservationId);
@@ -850,7 +855,12 @@ public class MySQLDatastore implements Datastore {
             try (ResultSet resultSet = statement.executeQuery(
                 "SELECT * FROM Rental " +
                     "LEFT JOIN Reservation ON Reservation.id = Rental.reservation_id " +
-                    "LEFT JOIN Employee ON Employee.id = Rental.employee_id"
+                    "LEFT JOIN Agency ON Agency.id = Reservation.agency_id " +
+                    "LEFT JOIN Customer ON Customer.id = Reservation.customer_id " +
+                    "LEFT JOIN Vehicle ON Vehicle.license_plate = Reservation.vehicle_license_plate " +
+                    "LEFT JOIN Category ON Category.name = Vehicle.category_name " +
+                    "LEFT JOIN Employee AS ReservationEmployee ON ReservationEmployee.id = Reservation.employee_id " +
+                    "LEFT JOIN Employee AS RentalEmployee ON RentalEmployee.id = Rental.employee_id"
             )) {
                 List<Rental> rentals = new LinkedList<>();
                 while (resultSet.next())
@@ -927,7 +937,7 @@ public class MySQLDatastore implements Datastore {
                 "LEFT JOIN Agency ON Agency.id = Reservation.agency_id " +
                 "LEFT JOIN Customer ON Customer.id = Reservation.customer_id " +
                 "LEFT JOIN Vehicle ON Vehicle.license_plate = Reservation.vehicle_license_plate " +
-                "LEFT JOIN Employee ON Employee.id = Reservation.employee_id " +
+                "LEFT JOIN Employee AS ReservationEmployee ON ReservationEmployee.id = Reservation.employee_id " +
                 "WHERE Reservation.id = ?"
         )) {
             statement.setInt(1, id);
@@ -950,7 +960,7 @@ public class MySQLDatastore implements Datastore {
                     "LEFT JOIN Agency ON Agency.id = Reservation.agency_id " +
                     "LEFT JOIN Customer ON Customer.id = Reservation.customer_id " +
                     "LEFT JOIN Vehicle ON Vehicle.license_plate = Reservation.vehicle_license_plate " +
-                    "LEFT JOIN Employee ON Employee.id = Reservation.employee_id"
+                    "LEFT JOIN Employee AS ReservationEmployee ON ReservationEmployee.id = Reservation.employee_id"
             )) {
                 List<Reservation> reservations = new LinkedList<>();
                 while (resultSet.next())
@@ -1026,7 +1036,7 @@ public class MySQLDatastore implements Datastore {
             "SELECT * FROM `Return` " +
                 "LEFT JOIN Rental ON Rental.reservation_id = `Return`.rental_reservation_id " +
                 "LEFT JOIN Agency ON Agency.id = `Return`.agency_id " +
-                "LEFT JOIN Employee ON Employee.id = `Return`.employee_id " +
+                "LEFT JOIN Employee AS ReturnEmployee ON ReturnEmployee.id = `Return`.employee_id " +
                 "WHERE `Return`.rental_reservation_id = ?"
         )) {
             statement.setInt(1, rentalReservationId);
@@ -1048,7 +1058,7 @@ public class MySQLDatastore implements Datastore {
                 "SELECT * FROM `Return` " +
                     "LEFT JOIN Rental ON Rental.reservation_id = `Return`.rental_reservation_id " +
                     "LEFT JOIN Agency ON Agency.id = `Return`.agency_id " +
-                    "LEFT JOIN Employee ON Employee.id = `Return`.employee_id"
+                    "LEFT JOIN Employee AS ReturnEmployee ON ReturnEmployee.id = `Return`.employee_id"
             )) {
                 List<Return> returns = new LinkedList<>();
                 while (resultSet.next())
@@ -1412,7 +1422,7 @@ public class MySQLDatastore implements Datastore {
 
     private Rental parseRental(ResultSet resultSet, String tableName) throws SQLException {
         Reservation reservation = parseReservation(resultSet);
-        Employee employee = parseEmployee(resultSet);
+        Employee employee = parseEmployee(resultSet, "RentalEmployee");
         Date date = resultSet.getDate(tableName + ".date");
         boolean damageInsurance = resultSet.getBoolean(tableName + ".damage_insurance");
         boolean accidentInsurance = resultSet.getBoolean(tableName + ".accident_insurance");
@@ -1432,7 +1442,7 @@ public class MySQLDatastore implements Datastore {
         Agency agency = parseAgency(resultSet);
         Customer customer = parseCustomer(resultSet);
         Vehicle vehicle = parseVehicle(resultSet);
-        Employee employee = parseEmployee(resultSet);
+        Employee employee = parseEmployee(resultSet, "ReservationEmployee");
         int expectedDuration = resultSet.getInt(tableName + ".expected_duration");
 
         Reservation reservation = new Reservation(id, agency, customer, vehicle, employee, expectedDuration);
@@ -1447,7 +1457,7 @@ public class MySQLDatastore implements Datastore {
     private Return parseReturn(ResultSet resultSet, String tableName) throws SQLException {
         Rental rental = parseRental(resultSet);
         Agency agency = parseAgency(resultSet);
-        Employee employee = parseEmployee(resultSet);
+        Employee employee = parseEmployee(resultSet, "ReturnEmployee");
         Date date = resultSet.getDate(tableName + ".date");
         int fuelConsumption = resultSet.getInt(tableName + ".fuel_consumption");
         int damageLevel = resultSet.getInt(tableName + ".damage_level");
