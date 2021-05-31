@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script>const employees = {{employees}}; const error = {{error}}; const selected_id = {{selected_id}};</script>
+        <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            font-family: Arial, Helvetica, sans-serif;
+            -webkit-appearance: none;
+        }
+
+        h1 {
+            margin: 1em 0 1em 0;
+            width: 100%;
+            text-align: center;
+            color: #11d2f0;
+        }
+
+        .login-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 50vw;
+        }
+
+        .image-container {
+            display: flex;
+            height: 100vh;
+            width: 50vw;
+            justify-content: center;
+            align-items: center;
+            padding: 50px;
+        }
+
+        @keyframes fadein {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        .image {
+            height: 100%;
+            width: 100%;
+            border-radius: 25px;
+            background-image: url('https://unsplash.com/photos/M-l5yWB38gg/download');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            box-shadow:
+            0 2.8px 2.2px rgba(0, 0, 0, 0.02),
+            0 6.7px 5.3px rgba(0, 0, 0, 0.028),
+            0 12.5px 10px rgba(0, 0, 0, 0.035),
+            0 22.3px 17.9px rgba(0, 0, 0, 0.042),
+            0 41.8px 33.4px rgba(0, 0, 0, 0.05),
+            0 100px 80px rgba(0, 0, 0, 0.07);
+            animation: fadein 2s;
+        }
+
+        .panel {
+            width: 400px;
+            height: 500px;
+            border-radius: 10px;
+            background: #fff;
+            margin: 100px auto;
+            text-align: center;
+            box-shadow:
+            0 2.8px 2.2px rgba(0, 0, 0, 0.02),
+            0 6.7px 5.3px rgba(0, 0, 0, 0.028),
+            0 12.5px 10px rgba(0, 0, 0, 0.035),
+            0 22.3px 17.9px rgba(0, 0, 0, 0.042),
+            0 41.8px 33.4px rgba(0, 0, 0, 0.05),
+            0 100px 80px rgba(0, 0, 0, 0.07);
+            animation: fadein 2s;
+            padding: 1em;
+        }
+
+        .login {
+            height: 45px;
+            width: 100%;
+            background-color: #8bc34a;
+            border-radius: 45px;
+            position: relative;
+            line-height: 45px;
+            text-align: center;
+            font-weight: bold;
+            color: white;
+            margin-top: 30px;
+            cursor: pointer;
+        }
+
+        .login:hover {
+            background-color: #599b2d;
+        }
+
+        input {
+            background-color: #22232a;
+            border-radius: 45px;
+            font-size: 15px;
+            height: 45px;
+            border: none;
+            padding-left: 15px;
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        input[placeholder] {
+            color: #656d79;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        select {
+            background-color: #22232a;
+            border-radius: 45px;
+            font-size: 15px;
+            height: 45px;
+            border: none;
+            padding-left: 15px;
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        </style>
+        <title>Car Rental &mdash; Login</title>
+    </head>
+    <body>
+        <div class="login-container">
+            <div class="panel">
+                <h1>Log in</h1>
+                <form class="form" action="/login" method="POST">
+                    <label for="employee_id">Employee</label>
+                    <br />
+                    <select id="employee_id" name="employee_id" required>
+                        <option value="" disabled selected>Please select...</option>
+                    </select>
+                    <input type="password" id="password" name="password" placeholder="Password" required />
+                    <p id="error"></p>
+                    <input class="login" type="submit" value="Login" />
+                </form>
+            </div>
+        </div>
+        <div class="image-container">
+            <div class="image"></div>
+        </div>
+        <script>
+        const $error = document.getElementById("error");
+        if (error !== null)
+            $error.innerText = error;
+        else $error.style.display = "none";
+
+        const $employeeSelect = document.getElementById("employee_id");
+        employees.forEach(employee => {
+            const $employeeOption = document.createElement("option");
+            $employeeOption.value = employee.id;
+            $employeeOption.innerText = `${employee.first_name} ${employee.last_name}`;
+            $employeeSelect.append($employeeOption);
+        });
+
+        if (selected_id !== null)
+            $employeeSelect.value = selected_id;
+        </script>
+    </body>
+</html>

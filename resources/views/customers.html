@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>const customers = {{customers}};</script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        font-family: Verdana, Tahoma, sans-serif;
+        background: url('https://images.unsplash.com/photo-1598133387813-be630df603fb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80');
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      header {
+        max-width: 1000px;
+        width: 100%;
+        background: #fff;
+        margin: 25px 0 25px 0;
+        border-radius: 25px;
+      }
+
+      .width {
+        width: 100%;
+      }
+
+      h1 {
+        text-align: center;
+        margin: 25px;
+        color: #11d2f0;
+      }
+
+      body {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+      }
+
+      main {
+        width: 100%;
+      }
+
+      .head-form {
+        max-width: 1000px;
+        width: 100%;
+        /* height: 70px; */
+        border-radius: 25px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+      }
+
+      .time {
+        margin-top: 20px;
+        width: 30%;
+        height: 40px;
+        text-align: center;
+      }
+
+      :disabled {
+        opacity: .5;
+      }
+
+      .img {
+        display: block;
+        height: 100px;
+        width: 100px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 50px;
+        border-radius: 100%;
+        box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.25);
+      }
+
+      input {
+        background-color: #C4C4C4;
+        border-radius: 20px;
+        height: 40px;
+        width: 200px;
+        margin: 5px;
+        padding: 10px;
+        border: none;
+        font-size: 12px;
+        color: black;
+        flex-grow: 1;
+      }
+
+      .time {
+        flex-grow: 1;
+        width: 60%;
+      }
+
+      ::placeholder {
+        color: black;
+      }
+
+      .wrapper {
+        height: 40px;
+        width: 200px;
+        margin: 5px;
+        border-radius:20px;
+        display:inline-block;
+        overflow:hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1;
+      }
+
+      select {
+        background-color: #C4C4C4;
+        border-radius: 20px;
+        height: 100%;
+        width: 100%;
+        padding: 3px;
+        border: none;
+        outline: none;
+      }
+
+      textarea {
+        vertical-align: top;
+        height: 5em;
+      }
+
+      form {
+        max-width: 1000px;
+        margin: 10px;
+        background-color: white;
+        margin-right: auto;
+        margin-left: auto;
+        position: sticky;
+        top: 10;
+      }
+
+      .flex {
+        display: flex;
+      }
+
+      .fix {
+        position: fixed;
+        top: 0px;
+        margin-left: 12%;
+      }
+
+      .table {
+        max-width: 1000px;
+      }
+
+      input:invalid {
+        caret-color: red;
+        border-bottom: 3px solid red;
+      }
+
+      /* main */
+
+      table {
+        max-width: 1000px;
+        width: 100%;
+        background-color: white;
+        border-radius: 25px;
+        overflow:hidden;
+        margin: 50px auto 50px auto;
+      }
+
+      th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        /* background-color: #4CAF50; */
+        color: black;
+        font-weight: bold;
+      }
+
+      tbody tr:nth-child(odd) {
+        background-color: #e9e9e9;
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      td {
+        text-align: center;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        padding: 8px;
+        border-bottom: 1px solid black;
+      }
+
+      .not {
+        background-color: crimson;
+      }
+
+      .not-not {
+        background-color: lightgreen;
+      }
+
+      .third {
+        width: 30%;
+      }
+    </style>
+    <title>Car Rental &mdash; Customers</title>
+  </head>
+  <body>
+    <header>
+      <h1>Car Rental — Customers</h1>
+    </header>
+    <div class="width"></div>
+    <form class="head-form" id="myheader" action="/customers" method="POST">
+      <input class="third" type="text" name="first_name" placeholder="First name" required />
+      <input class="third" type="text" name="last_name" placeholder="Last name" required />
+      <input class="third" type="tel" name="phone" placeholder="Phone number" />
+      <input type="text" name="street_number" placeholder="Street number" />
+      <input type="text" name="street_name" placeholder="Street name" />
+      <input type="text" name="postal_code" placeholder="Postal code" />
+      <input type="text" name="city" placeholder="City" />
+      <input class="not-not disabled" type="submit" id="sub" value="Add customer" />
+    </form>
+    <main>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Address</th>
+          </tr>
+        </thead>
+        <tbody id="table" class="color">
+        </tbody>
+      </table>
+    </main>
+
+    <script>
+      const $table = document.getElementById("table");
+      customers.forEach(customer => {
+        const $row = document.createElement("tr");
+
+        const $nameCell = document.createElement("td");
+        const $link = document.createElement("a");
+        $link.href = `/customer/${encodeURIComponent(customer.id)}`;
+        $link.innerText = `${customer.first_name} ${customer.last_name}`;
+        $nameCell.appendChild($link);
+        $row.appendChild($nameCell);
+
+        const $phoneCell = document.createElement("td");
+        if (customer.phone !== null)
+          $phoneCell.innerText = customer.phone;
+        else $phoneCell.innerHTML = "<i>No phone number</i>";
+        $row.appendChild($phoneCell);
+
+        const $addressCell = document.createElement("td");
+        const address = [];
+        if (customer.street_number !== null) address.push(customer.street_number);
+        if (customer.street_name !== null) address.push(customer.street_name);
+        if (customer.postal_code !== null) address.push(customer.postal_code);
+        if (customer.city !== null) address.push(customer.city);
+        if (address.length > 0)
+          $addressCell.innerText = address.join(" ");
+        else $addressCell.innerHTML = "<i>No address</i>";
+        $row.appendChild($addressCell);
+
+        $table.appendChild($row);
+      });
+    </script>
+  </body>
+</html>
